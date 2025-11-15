@@ -59,6 +59,7 @@ Users can register, browse restaurants, add menu items to carts, and checkout or
 ## 📂 Project Structure
 _Current repo currently contains the full structure (backend + frontend + infra):_
 
+```text
 backend/
   ├── src/main/java/com/laioffer/onlineorder/...
   ├── src/main/resources/application.yml
@@ -73,6 +74,7 @@ infra/
   ├── Dockerfile
   ├── ECR_push.sh
   └── app-runner.json
+```
 
 ## 👥 Collaborators
 
