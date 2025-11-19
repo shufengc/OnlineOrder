@@ -5,11 +5,17 @@ import com.laioffer.onlineorder.entity.CustomerEntity;
 import com.laioffer.onlineorder.entity.MenuItemEntity;
 import com.laioffer.onlineorder.entity.OrderItemEntity;
 import com.laioffer.onlineorder.entity.RestaurantEntity;
+import com.laioffer.onlineorder.model.RestaurantDto;
 import com.laioffer.onlineorder.repository.CartRepository;
 import com.laioffer.onlineorder.repository.CustomerRepository;
 import com.laioffer.onlineorder.repository.MenuItemRepository;
 import com.laioffer.onlineorder.repository.OrderItemRepository;
 import com.laioffer.onlineorder.repository.RestaurantRepository;
+import com.laioffer.onlineorder.service.CartService;
+import com.laioffer.onlineorder.service.MenuItemService;
+import com.laioffer.onlineorder.service.RestaurantService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
@@ -19,29 +25,47 @@ import java.util.List;
 @Component
 public class DevRunner implements ApplicationRunner {
 
+    // Logger for printing test results
+    private static final Logger logger = LoggerFactory.getLogger(DevRunner.class);
+
+    // repositories
     private final CartRepository cartRepository;
     private final CustomerRepository customerRepository;
     private final MenuItemRepository menuItemRepository;
     private final OrderItemRepository orderItemRepository;
     private final RestaurantRepository restaurantRepository;
 
+    // services
+    private final CartService cartService;
+    private final MenuItemService menuItemService;
+    private final RestaurantService restaurantService;
+
     public DevRunner(
             CartRepository cartRepository,
             CustomerRepository customerRepository,
             MenuItemRepository menuItemRepository,
             OrderItemRepository orderItemRepository,
-            RestaurantRepository restaurantRepository
+            RestaurantRepository restaurantRepository,
+            CartService cartService,
+            MenuItemService menuItemService,
+            RestaurantService restaurantService
     ) {
         this.cartRepository = cartRepository;
         this.customerRepository = customerRepository;
         this.menuItemRepository = menuItemRepository;
         this.orderItemRepository = orderItemRepository;
         this.restaurantRepository = restaurantRepository;
+        this.cartService = cartService;
+        this.menuItemService = menuItemService;
+        this.restaurantService = restaurantService;
     }
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        // -------------------- 插入测试数据（原有代码，不要删） --------------------
+
+        // ----------------------------------------------------
+        // 1. Insert test data using repositories
+        // ----------------------------------------------------
 
         // customers
         CustomerEntity customer0 =
@@ -95,14 +119,39 @@ public class DevRunner implements ApplicationRunner {
         );
         orderItemRepository.saveAll(newOrderItems);
 
-        // -------------------- 新增：删除 & 更新操作（本步骤要加的） --------------------
-        // 删除 id = 2 的 customer
+        // some delete / update examples
         customerRepository.deleteById(2L);
-
-        // 删除 id = 4 的 restaurant
         restaurantRepository.deleteById(4L);
-
-        // 把 user_a@mail.com 的 first_name / last_name 更新成 "first" / "last"
         customerRepository.updateNameByEmail("user_a@mail.com", "first", "last");
+
+        // ----------------------------------------------------
+        // 2. Call service APIs and log the results
+        // ----------------------------------------------------
+
+        // RestaurantService: get all restaurants with their menu items
+        List<RestaurantDto> restaurantDtos = restaurantService.getRestaurants();
+        logger.info("Restaurant DTOs: {}", restaurantDtos);
+
+        // MenuItemService: get menu items by restaurant id
+        List<MenuItemEntity> menuItemEntities =
+                menuItemService.getMenuItemsByRestaurantId(2L);
+        logger.info("Menu items of restaurant 2: {}", menuItemEntities);
+
+        // MenuItemService: get single menu item
+        logger.info("Menu item with id 1: {}", menuItemService.getMenuItemById(1L));
+
+        // CartService: add items into cart 1
+        cartService.addMenuItemToCart(1L, 1L);
+        cartService.addMenuItemToCart(1L, 3L);
+        cartService.addMenuItemToCart(1L, 3L);
+        cartService.addMenuItemToCart(1L, 5L);
+        cartService.addMenuItemToCart(1L, 5L);
+        cartService.addMenuItemToCart(1L, 5L);
+
+        logger.info("Cart of customer 1 (after adding items): {}", cartService.getCart(1L).toString());
+
+        // clear cart 1
+        cartService.clearCart(1L);
+        logger.info("Cart of customer 1 (after clear): {}", cartService.getCart(1L).toString());
     }
 }
