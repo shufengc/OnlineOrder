@@ -1,5 +1,8 @@
-server:
-  port: 8080
+logging:
+  level:
+    org.apache.coyote.http11.Http11InputBuffer: DEBUG # Incoming HTTP requests
+    org.springframework.jdbc.core: DEBUG
+
 spring:
   application:
     name: OnlineOrder
@@ -12,7 +15,3 @@ spring:
     init:
       mode: always
       schema-locations: classpath:database-init.sql
-logging:
-  level:
-    org.apache.coyote.http11.Http11InputBuffer: DEBUG # Incoming HTTP requests
-    org.springframework.jdbc.core: DEBUG
