@@ -12,6 +12,9 @@ spring:
     init:
       mode: always
       schema-locations: classpath:database-init.sql
+  cache:
+    caffeine:
+      spec: expireAfterWrite=1m
 logging:
   level:
     org.apache.coyote.http11.Http11InputBuffer: DEBUG # Incoming HTTP requests
