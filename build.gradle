@@ -25,9 +25,12 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
     runtimeOnly 'org.postgresql:postgresql:42.6.0'
 
-    // caffeine and caching
+    // Caffeine caching
     implementation 'com.github.ben-manes.caffeine:caffeine:3.+'
     implementation 'org.springframework.boot:spring-boot-starter-cache'
+
+    // Security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
 
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
