@@ -10,6 +10,9 @@ import com.laioffer.onlineorder.repository.MenuItemRepository;
 import com.laioffer.onlineorder.repository.OrderItemRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.CacheEvict;
+
 
 import java.util.*;
 
@@ -30,6 +33,7 @@ public class CartService {
         this.orderItemRepository = orderItemRepository;
     }
 
+    @CacheEvict(cacheNames = "cart", key = "#customerId")
     @Transactional
     public void addMenuItemToCart(long customerId, long menuItemId) {
         CartEntity cart = cartRepository.getByCustomerId(customerId);
@@ -60,6 +64,7 @@ public class CartService {
         cartRepository.updateTotalPrice(cart.id(), cart.totalPrice() + menuItem.price());
     }
 
+    @Cacheable("cart")
     public CartDto getCart(Long customerId) {
         CartEntity cart = cartRepository.getByCustomerId(customerId);
         List<OrderItemEntity> orderItems = orderItemRepository.getAllByCartId(cart.id());
@@ -67,6 +72,7 @@ public class CartService {
         return new CartDto(cart, orderItemDtos);
     }
 
+    @CacheEvict(cacheNames = "cart")
     @Transactional
     public void clearCart(Long customerId) {
         CartEntity cartEntity = cartRepository.getByCustomerId(customerId);
@@ -95,3 +101,4 @@ public class CartService {
         return orderItemDtos;
     }
 }
+
