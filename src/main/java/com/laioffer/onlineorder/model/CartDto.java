@@ -1,6 +1,8 @@
 package com.laioffer.onlineorder.model;
-import com.laioffer.onlineorder.entity.CartEntity;
+
 import java.util.List;
+
+import com.laioffer.onlineorder.entity.CartEntity;
 
 public record CartDto(
         Long id,
@@ -11,3 +13,4 @@ public record CartDto(
         this(entity.id(), entity.totalPrice(), orderItems);
     }
 }
+
