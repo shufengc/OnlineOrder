@@ -9,3 +9,4 @@ public interface MenuItemRepository extends ListCrudRepository<MenuItemEntity, L
 
     List<MenuItemEntity> getByRestaurantId(Long restaurantId);
 }
+
