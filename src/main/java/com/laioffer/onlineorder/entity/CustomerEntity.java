@@ -12,3 +12,4 @@ public record CustomerEntity(
         String firstName,
         String lastName
 ) {}
+

@@ -11,3 +11,4 @@ public record RestaurantEntity(
         String phone,
         String imageUrl
 ) {}
+

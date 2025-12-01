@@ -12,3 +12,4 @@ public record MenuItemEntity(
         Double price,
         String imageUrl
 ) {}
+
