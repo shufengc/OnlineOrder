@@ -3,8 +3,6 @@
 **Patton Food** is a full-stack, cloud-deployed online food ordering web application.  
 It allows users to register, authenticate, browse restaurants and menus, add items to a shopping cart, and complete checkout through a modern web interface.
 
-This project was developed as an **Implementation Project for ELEN 6770 – Cloud Computing**.
-
 ---
 
 ## 🚀 Features
