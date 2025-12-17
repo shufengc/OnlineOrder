@@ -63,8 +63,6 @@ It allows users to register, authenticate, browse restaurants and menus, add ite
 ### Successful Checkout
 ![Checkout](docs/checkout.png)
 
-> Note: Screenshot paths can be updated based on your repository structure.
-
 ---
 
 ## 📂 Project Structure
