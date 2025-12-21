@@ -181,7 +181,7 @@ VALUES
 
     ('Medium spicy.',
      'https://img.cdn4dd.com/cdn-cgi/image/fit=contain,width=1920,format=auto,quality=50/https://cdn.doordash.com/media/photos/8b2ca9fc-2c1d-4bf2-96ff-d0bd3c415e8d-retina-large.jpg',
-      '武冈香干炒肚丝Stir Fried Shredded Tripe with Wugang Tofu',19.99,3),
+     '武冈香干炒肚丝Stir Fried Shredded Tripe with Wugang Tofu',19.99,3),
 
     ('Very spicy.',
      'https://img.cdn4dd.com/cdn-cgi/image/fit=contain,width=1920,format=auto,quality=50/https://cdn.doordash.com/media/photos/89ad8679-346e-41d8-b98f-3501fff4b277-retina-large.jpg',
