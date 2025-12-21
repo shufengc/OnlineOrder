@@ -12,4 +12,24 @@ public interface CartRepository extends CrudRepository<CartEntity, Long> {
     @Modifying
     @Query("UPDATE carts SET total_price = :totalPrice WHERE id = :cartId")
     void updateTotalPrice(Long cartId, Double totalPrice);
+
+    @Modifying
+    @Query("""
+           UPDATE carts
+           SET coupon_code = :code,
+               discount = :discount,
+               final_total = :finalTotal
+           WHERE id = :cartId
+           """)
+    void updateCoupon(Long cartId, String code, Double discount, Double finalTotal);
+
+    @Modifying
+    @Query("""
+           UPDATE carts
+           SET coupon_code = NULL,
+               discount = NULL,
+               final_total = NULL
+           WHERE id = :cartId
+           """)
+    void clearCoupon(Long cartId);
 }

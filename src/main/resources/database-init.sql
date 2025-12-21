@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS restaurants;
 DROP TABLE IF EXISTS carts;
 DROP TABLE IF EXISTS authorities;
 DROP TABLE IF EXISTS customers;
+DROP TABLE IF EXISTS coupons;
 
 CREATE TABLE customers
 (
@@ -28,6 +29,11 @@ CREATE TABLE carts
     id          SERIAL PRIMARY KEY NOT NULL,
     customer_id INTEGER UNIQUE NOT NULL,
     total_price NUMERIC NOT NULL,
+
+    coupon_code VARCHAR(64),
+    discount    NUMERIC,
+    final_total NUMERIC,
+
     CONSTRAINT fk_customer FOREIGN KEY (customer_id) REFERENCES customers (id) ON DELETE CASCADE
 );
 
@@ -199,5 +205,25 @@ VALUES
      'https://img.cdn4dd.com/cdn-cgi/image/fit=contain,width=1920,format=auto,quality=50/https://cdn.doordash.com/media/photos/a307e73d-dd12-4841-be14-6f5825a64c59-retina-large.jpg',
      '蒜蓉油麦菜Stir Fried A-Choy with Minced Garlic',10.99,3);
 
+-- =========================
+-- Coupons
+-- =========================
+CREATE TABLE coupons (
+                         code        VARCHAR(64) PRIMARY KEY,
+                         type        VARCHAR(32) NOT NULL,   -- PERCENT_OFF / AMOUNT_OFF / THRESHOLD_OFF
+                         value       NUMERIC NOT NULL,
+                         expiry      TIMESTAMP NULL,
+                         min_spend   NUMERIC,
+                         usage_limit INT,
+                         used_count  INT NOT NULL DEFAULT 0
+);
 
-
+INSERT INTO coupons(code, type, value, expiry, min_spend, usage_limit, used_count)
+VALUES
+    ('OFF10',   'PERCENT_OFF',   10.00, '2099-01-01 00:00:00', 0,    0,    0),
+    ('OFF5',    'AMOUNT_OFF',     5.00, '2099-01-01 00:00:00', 0,    0,    0),
+    ('SAVE20',  'THRESHOLD_OFF', 20.00, '2099-01-01 00:00:00', 50.00,0,    0),
+    ('TENOFF',  'PERCENT_OFF',   10.00, '2099-12-31 00:00:00', NULL, 1000, 0),
+    ('5OFF',    'AMOUNT_OFF',     5.00, '2099-12-31 00:00:00', NULL, 500,  0),
+    ('20OFF50', 'THRESHOLD_OFF', 20.00, '2099-12-31 00:00:00', 50.00,200,  0)
+ON CONFLICT (code) DO NOTHING;

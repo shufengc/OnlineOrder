@@ -7,5 +7,9 @@ import org.springframework.data.relational.core.mapping.Table;
 public record CartEntity(
         @Id Long id,
         Long customerId,
-        Double totalPrice
+        Double totalPrice,
+        String couponCode,
+        Double discount,
+        Double finalTotal
 ) {}
+

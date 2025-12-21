@@ -45,7 +45,7 @@ public class CustomerService {
         customerRepository.updateNameByEmail(email, firstName, lastName);
 
         CustomerEntity savedCustomer = customerRepository.findByEmail(email);
-        CartEntity cart = new CartEntity(null, savedCustomer.id(), 0.0);
+        CartEntity cart = new CartEntity(null, savedCustomer.id(), 0.0, null, 0.0, 0.0);
         cartRepository.save(cart);
     }
 
