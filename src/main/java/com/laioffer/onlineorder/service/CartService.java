@@ -100,5 +100,26 @@ public class CartService {
         }
         return orderItemDtos;
     }
+
+    @CacheEvict(cacheNames = "cart", key = "#customerId")
+    @Transactional
+    public void removeMenuItemFromCart(long customerId, long orderItemId) {
+        // 1. 获取购物车
+        CartEntity cart = cartRepository.getByCustomerId(customerId);
+
+        // 2. 查找要删除的条目
+        OrderItemEntity item = orderItemRepository.findById(orderItemId)
+                .orElseThrow(() -> new RuntimeException("OrderItem not found"));
+
+        // 3. 计算新总价：原总价 - 条目总价
+        // 既然 item.price() 已经是总价，直接相减
+        double newTotalPrice = cart.totalPrice() - item.price();
+
+        // 4. 执行删除 (使用 Repository 内置的 deleteById)
+        orderItemRepository.deleteById(orderItemId);
+
+        // 5. 更新购物车表中的总价
+        cartRepository.updateTotalPrice(cart.id(), Math.max(0.0, newTotalPrice));
+    }
 }
 
